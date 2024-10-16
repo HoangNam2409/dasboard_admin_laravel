@@ -12,6 +12,7 @@
 
     <link href="/template/css/animate.css" rel="stylesheet">
     <link href="/template/css/style.css" rel="stylesheet">
+    <link href="/template/css/customize.css" rel="stylesheet">
 </head>
 
 <body class="gray-bg">
@@ -28,12 +29,19 @@
                 <!--Continually expanded and constantly improved Inspinia Admin Them (IN+)-->
             </p>
             <p>Login in. To see it in action.</p>
-            <form class="m-t" role="form" action="index.html">
+            <form class="m-t" role="form" action="{{ route('auth.login') }}" method="post">
+                @csrf
                 <div class="form-group">
-                    <input type="email" class="form-control" placeholder="Username" required="">
+                    <input type="text" name="email" class="form-control" placeholder="Email">
+                    @if ($errors->has('email'))
+                        <span class="error-message">* {{ $errors->first('email') }}</span>
+                    @endif
                 </div>
                 <div class="form-group">
-                    <input type="password" class="form-control" placeholder="Password" required="">
+                    <input type="password" name="password" class="form-control" placeholder="Password">
+                    @if ($errors->has('password'))
+                        <span class="error-message">* {{ $errors->first('password') }}</span>
+                    @endif
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
 
