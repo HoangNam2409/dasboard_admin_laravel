@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\DashboardController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Ajax\LocationController;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +12,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index')->middleware(AuthenticateMiddleware::class);
+// AJAX
+Route::get('/ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location.index')->middleware(AuthenticateMiddleware::class);
+
+// USERS
+Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(AuthenticateMiddleware::class);
+Route::get('/user/index', [UserController::class, 'index'])->name('user.index')->middleware(AuthenticateMiddleware::class);
+
+Route::get('/dashboard/index', [DashboardController::class, 'index'])->name('dashboard.index')->middleware(AuthenticateMiddleware::class);
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login');

@@ -18,7 +18,7 @@ class AuthenticateMiddleware
     {
         if (Auth::id() == null) {
             flash()->error('Bạn phải đăng nhập!');
-            return redirect()->route('auth.page-login');
+            return redirect()->route('auth.index');
         }
         return $next($request);
     }

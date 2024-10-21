@@ -6,12 +6,21 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
+    public $serviceBindings = [
+        'App\Services\Interfaces\UserServiceInterface' => 'App\Services\UserService',
+        'App\Repositories\Interfaces\UserRepositoryInterface' => 'App\Repositories\UserRepository',
+        'App\Repositories\Interfaces\ProvinceRepositoryInterface' => 'App\Repositories\ProvinceRepository',
+        'App\Repositories\Interfaces\DistrictRepositoryInterface' => 'App\Repositories\DistrictRepository',
+        'App\Repositories\Interfaces\BaseRepositoryInterface' => 'App\Repositories\BaseRepository'
+    ];
     /**
      * Register any application services.
      */
     public function register(): void
     {
-        //
+        foreach ($this->serviceBindings as $key => $val) {
+            $this->app->bind($key, $val);
+        }
     }
 
     /**
