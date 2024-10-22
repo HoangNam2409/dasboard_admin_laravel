@@ -19,6 +19,22 @@ class LocationController extends Controller
     {
         $province_id = $request->input('province_id');
 
-        $districts = $this->districtRepository->all();
+        $districts = $this->districtRepository->findDistrictByProvinceId($province_id);
+        $response = [
+            'html' => $this->renderHtml($districts),
+        ];
+        
+        return response()->json($response);
+    }
+
+    public function renderHtml($districts)
+    {
+        $html = '<option value="0">[Chọn Quận/Huyện]</option>';
+        foreach($districts as $district)
+        {
+            $html .= '<option value="' . $district->code . '">' . $district->name . '</option>';
+        }
+
+        return $html;
     }
 }

@@ -15,8 +15,8 @@
                     province_id: province_id,
                 },
                 dataType: "json",
-                success: function (data) {
-                    $("result").html(data);
+                success: function (res) {
+                    $(".districts").html(res.html);
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.log("Lỗi: " + textStatus + " " + errorThrown);

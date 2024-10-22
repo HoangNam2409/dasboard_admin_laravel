@@ -125,8 +125,8 @@
                             <div class="col-lg-6">
                                 <div class="form-row">
                                     <label for="" class="control-label text-left">Quận/Huyện</label>
-                                    <select name="district_id" class="form-control">
-                                        <option value="0">[Chọn quận/huyện]</option>
+                                    <select name="district_id" class="form-control districts">
+                                        <option value="0">[Chọn Quận/Huyện]</option>
                                     </select>
                                 </div>
                             </div>
