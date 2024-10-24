@@ -17,9 +17,13 @@ Route::get('/ajax/location/getLocationDistrict', [LocationController::class, 'ge
 Route::get('/ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location.index')->middleware(AuthenticateMiddleware::class);
 
 // USERS
+Route::get('/user/delete/{id}', [UserController::class, 'delete'])->name('user.delete')->middleware(AuthenticateMiddleware::class);
+Route::get('/user/edit/{id}', [UserController::class, 'edit'])->name('user.edit')->where('id', '[0-9]+')->middleware(AuthenticateMiddleware::class);
 Route::get('/user/create', [UserController::class, 'create'])->name('user.create')->middleware(AuthenticateMiddleware::class);
 Route::get('/user/index', [UserController::class, 'index'])->name('user.index')->middleware(AuthenticateMiddleware::class);
+Route::post('/user/update/{id}', [UserController::class, 'update'])->name('user.update')->middleware(AuthenticateMiddleware::class);
 Route::post('/user/store', [UserController::class, 'store'])->name('user.store')->middleware(AuthenticateMiddleware::class);
+Route::delete('/user/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy')->middleware(AuthenticateMiddleware::class);
 
 // Dashboard
 Route::get('/dashboard/index', [DashboardController::class, 'index'])->name('dashboard.index')->middleware(AuthenticateMiddleware::class);

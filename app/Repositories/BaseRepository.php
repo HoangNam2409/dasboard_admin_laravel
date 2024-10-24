@@ -20,6 +20,36 @@ class BaseRepository implements BaseRepositoryInterface
         $this->$model = $model;
     }
 
+    public function pagination(
+        $column = ['*'],
+        $condition = [],
+        $join = [],
+        $perPage = 20
+    ){
+        $query = $this->model->select($column)->where($condition);
+        if(!empty($join)) {
+            $query->join(...$join);
+        }
+
+        return $query->paginate($perPage);
+    }
+
+    public function destroy(string $id)
+    {
+        return $this->findById($id)->delete();
+    }
+
+    public function forceDelete(string $id)
+    {
+        return $this->findById($id)->forceDelete();
+    }
+
+    public function update(string $id, array $payload = [])
+    {
+        $user = $this->findById($id);
+        return $user->update($payload);
+    }
+
     public function create(array $payload = [])
     {
         $model = $this->model->create($payload);

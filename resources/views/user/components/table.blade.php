@@ -32,11 +32,14 @@
                         <div class="address-item name">{{ $user->address }}</div>
                     </td>
                     <td class="text-center">
-                        <input type="checkbox" class="js-switch" checked />
+                        <input type="checkbox" value="{{ $user->publish }}" class="js-switch"
+                            {{ $user->publish == 1 ? 'checked' : '' }} />
                     </td>
                     <td class="text-center">
-                        <a href="" class="btn btn-success"><i class="fa fa-edit"></i></a>
-                        <a href="" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                        <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i
+                                class="fa fa-edit"></i></a>
+                        <a href="{{ route('user.delete', $user->id) }}" class="btn btn-danger"><i
+                                class="fa fa-trash"></i></a>
                     </td>
                 </tr>
             @endforeach
