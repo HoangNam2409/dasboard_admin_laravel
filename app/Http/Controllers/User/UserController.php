@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\Interfaces\UserServiceInterface as UserService;
 use App\Repositories\Interfaces\ProvinceRepositoryInterface as ProvinceRepository;
+use App\Http\Requests\StoreUserRequest;
 
 class UserController extends Controller
 {
@@ -50,9 +51,7 @@ class UserController extends Controller
     // action create
     public function create()
     {
-        $location = [
-            'provinces' => $this->provinceRepository->all()
-        ];
+        $provinces = $this->provinceRepository->all();
 
         // Config
         $config = [
@@ -71,7 +70,17 @@ class UserController extends Controller
         return view('dashboard.layout', compact(
             'template',
             'config',
-            'location',
+            'provinces',
         ));
+    }
+
+    // action store
+    public function store(StoreUserRequest $request)
+    {
+        if($this->userService->create($request)) {
+            return redirect()->route('user.index')->with('success', 'Thêm mới bản ghi thành công');
+        }
+
+        return redirect()->route('user.index')->with('success', 'Thêm mới bản ghi không thành công. Hãy thử lại');
     }
 }

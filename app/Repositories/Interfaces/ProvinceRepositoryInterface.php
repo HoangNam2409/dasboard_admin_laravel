@@ -9,4 +9,5 @@ namespace App\Repositories\Interfaces;
 interface ProvinceRepositoryInterface
 {
     public function all();
+    public function findById(string $modelId, array $column = ['*'], array $relation = []);
 }

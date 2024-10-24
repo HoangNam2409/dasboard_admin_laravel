@@ -3,29 +3,57 @@
     var HT = {};
     // var document = $(document);
 
-    HT.province = () => {
-        $(document).on("change", ".province", function () {
+    HT.getLocation = () => {
+        $(document).on("change", ".location", function () {
             let _this = $(this);
-            let province_id = _this.val();
-
-            $.ajax({
-                url: "/ajax/location/getLocation", // URL của tệp xử lý dữ liệu trên máy chủ
-                type: "GET",
+            let option = {
                 data: {
-                    province_id: province_id,
+                    location_id: _this.val(),
                 },
-                dataType: "json",
-                success: function (res) {
-                    $(".districts").html(res.html);
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log("Lỗi: " + textStatus + " " + errorThrown);
-                },
-            });
+                target: _this.attr("data-target"),
+            };
+
+            console.log(option);
+
+            HT.sendDataToGetLocation(option);
         });
     };
 
+    HT.sendDataToGetLocation = (option) => {
+        $.ajax({
+            url: "/ajax/location/getLocation", // URL của tệp xử lý dữ liệu trên máy chủ
+            type: "GET",
+            data: option,
+            dataType: "json",
+            success: function (res) {
+                let options = `<option value="0">${res.data.root}</option>`;
+                res.data.locations.forEach((location) => {
+                    options += `<option value="${location.code}">${location.name}</option>`;
+                });
+                $(`.${option.target}`).html(options);
+
+                if (district_id != "" && option.target == "districts") {
+                    $(".districts").val(district_id).trigger("change");
+                }
+
+                if (ward_id != "" && option.target == "wards") {
+                    $(".wards").val(ward_id);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Lỗi: " + textStatus + " " + errorThrown);
+            },
+        });
+    };
+
+    HT.loadCity = () => {
+        if (province_id !== "") {
+            $(".province").val(province_id).trigger("change");
+        }
+    };
+
     $(document).ready(function () {
-        HT.province();
+        HT.getLocation();
+        HT.loadCity();
     });
 })(jQuery);

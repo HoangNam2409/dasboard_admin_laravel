@@ -1,6 +1,5 @@
-<div class="row wrapper border-bottom white-bg page-heading">
-    @include('dashboard.component.breadcrumb', ['title' => $config['seo']['index']['title']])
-
+@include('dashboard.component.breadcrumb', ['title' => $config['seo']['index']['title']])
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-lg-12 mt20">
         <div class="ibox float-e-margins">
             <div class="ibox-title">
