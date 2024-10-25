@@ -28,10 +28,11 @@ class UserController extends Controller
         $this->userRepository = $userRepository;
     }
 
-    public function index()
+    // Action index
+    public function index(Request $request)
     {
 
-        $users = $this->userRepository->pagination(['id', 'email', 'name', 'phone', 'address', 'publish']);
+        $users = $this->userService->paginate($request);
 
         // Config
         $config = [

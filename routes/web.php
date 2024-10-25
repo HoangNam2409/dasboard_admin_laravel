@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Ajax\DashboardController as AjaxDashboardController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\UserController;
@@ -13,7 +14,8 @@ Route::get('/', function () {
 });
 
 // AJAX
-Route::get('/ajax/location/getLocationDistrict', [LocationController::class, 'getLocationDistrict'])->name('ajax.location.district')->middleware(AuthenticateMiddleware::class);
+Route::post('/ajax/dashboard/changeStatusAll', [AjaxDashboardController::class, 'changeStatusAll'])->name('ajax.dashboard.changeStatusAll')->middleware(AuthenticateMiddleware::class);
+Route::post('/ajax/dashboard/changeStatus', [AjaxDashboardController::class, 'changeStatus'])->name('ajax.dashboard.changeStatus')->middleware(AuthenticateMiddleware::class);
 Route::get('/ajax/location/getLocation', [LocationController::class, 'getLocation'])->name('ajax.location.index')->middleware(AuthenticateMiddleware::class);
 
 // USERS

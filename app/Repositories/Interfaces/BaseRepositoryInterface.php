@@ -8,7 +8,13 @@ namespace App\Repositories\Interfaces;
  */
 interface BaseRepositoryInterface
 {
-    public function pagination($column = ['*'], $condition = [], $join = [], $perPage = 20);
+    public function pagination(
+        array $column = ['*'], 
+        array $condition = [], 
+        array $join = [],
+        int $perPage = 20,
+        array $extend = [],
+    );
     public function destroy(string $id);
     public function update(string $id, array $payload = []);
     public function create(array $payload = []);

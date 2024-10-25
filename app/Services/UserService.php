@@ -22,6 +22,18 @@ class UserService implements UserServiceInterface
         $this->userRepository = $userRepository;
     }
 
+    // paginate
+    public function paginate($request)
+    {
+        $condition['keyword'] = addslashes($request->input('keyword'));
+        $perPage = $request->integer('perpage');
+        $extend['path'] = 'user/index';
+
+        $users = $this->userRepository->pagination(['id', 'email', 'name', 'phone', 'address', 'publish'], $condition, [], $perPage, $extend);
+        return $users;
+    }
+
+    // Create
     public function create($request)
     {
         DB::beginTransaction();
@@ -44,6 +56,8 @@ class UserService implements UserServiceInterface
         }
     }
 
+
+    // Update
     public function update($request, $id)
     {
         DB::beginTransaction();
@@ -63,6 +77,7 @@ class UserService implements UserServiceInterface
         }
     }
 
+    // Destroy
     public function destroy($id)
     {
         DB::beginTransaction();
@@ -79,6 +94,33 @@ class UserService implements UserServiceInterface
         }
     }
 
+    // Change Status
+    public function updateStatus(array $post = [])
+    {
+        DB::beginTransaction();
+
+        try {
+            $payload[$post['field']] = ($post['value'] == 0 ? 1 : 0);
+
+            $this->userRepository->update($post['modelId'], $payload);
+
+            DB::commit();
+            return true;
+        } catch(\Exception $e) {
+            DB::rollBack();
+            $e->getMessage();
+            return false;
+        }
+    }
+
+    // Change Status All
+    public function updateStatusAll(array $post = [])
+    {
+        
+    }
+
+
+    // convertBirthdayDate
     private function convertBirthdayDate($birthday)
     {
         $carbonDate = Carbon::createFromFormat('Y-m-d', $birthday);

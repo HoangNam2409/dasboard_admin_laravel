@@ -17,7 +17,7 @@
             @foreach ($users as $user)
                 <tr>
                     <td class="text-center">
-                        <input type="checkbox" value="" id="checkAll" class="input-checkbox checkBoxItem">
+                        <input type="checkbox" value="{{ $user->id }}" class="input-checkbox checkBoxItem">
                     </td>
                     <td>
                         <div class="user-item name">{{ $user->name }}</div>
@@ -32,7 +32,8 @@
                         <div class="address-item name">{{ $user->address }}</div>
                     </td>
                     <td class="text-center">
-                        <input type="checkbox" value="{{ $user->publish }}" class="js-switch"
+                        <input type="checkbox" value="{{ $user->publish }}" class="js-switch status"
+                            data-field="publish" data-model="User" data-modelId="{{ $user->id }}"
                             {{ $user->publish == 1 ? 'checked' : '' }} />
                     </td>
                     <td class="text-center">
