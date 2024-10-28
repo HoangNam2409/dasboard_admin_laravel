@@ -9,7 +9,7 @@ namespace App\Repositories\Interfaces;
 interface BaseRepositoryInterface
 {
     public function pagination(
-        array $column = ['*'], 
+        array $columns = ['*'], 
         array $condition = [], 
         array $join = [],
         int $perPage = 20,
@@ -20,4 +20,5 @@ interface BaseRepositoryInterface
     public function create(array $payload = []);
     public function all();
     public function findById(string $id, array $column = ['*'], array $relation = []);
+    public function updateByWhereIn(string $whereInField = '', array $whereIn = [], array $payload = []);
 }

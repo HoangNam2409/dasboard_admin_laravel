@@ -14,8 +14,19 @@
                     </select>
                 </div>
             </div>
+            @php
+                $publishArray = ['Unpublish', 'Publish'];
+                $publish = request('publish') ?: old('publish');
+            @endphp
             <div class="action">
                 <div class="uk-flex">
+                    <select name="publish" class="form-control mr10">
+                        <option value="-1" selected="selected">Chọn tình trạng</option>
+                        @foreach ($publishArray as $key => $val)
+                            <option value="{{ $key }}" {{ $publish == $key ? 'selected' : '' }}>
+                                {{ $val }}</option>
+                        @endforeach
+                    </select>
                     <select name="user_catalogue_id" class="form-control mr10">
                         <option value="0" selected="selected">Chọn nhóm thành viên</option>
                         <option value="1">Quản trị viên</option>

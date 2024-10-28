@@ -22,13 +22,13 @@ class BaseRepository implements BaseRepositoryInterface
 
     // Pagination
     public function pagination(
-        array $column = ['*'],
+        array $columns = ['*'],
         array $condition = [],
         array $join = [],
         int $perPage = 20,
         array $extend = [],
     ){
-        $query = $this->model->select($column)->where(function($query) use ($condition) {
+        $query = $this->model->select($columns)->where(function($query) use ($condition) {
             if(isset($condition['keyword']) && !empty($condition['keyword'])) {
                 $query->where('name', 'LIKE', '%'.$condition['keyword'].'%');
             }
@@ -59,6 +59,11 @@ class BaseRepository implements BaseRepositoryInterface
     {
         $user = $this->findById($id);
         return $user->update($payload);
+    }
+
+    public function updateByWhereIn(string $whereInField = '', array $whereIn = [], array $payload = [])
+    {
+        return $this->model->whereIn($whereInField, $whereIn)->update($payload);
     }
 
 

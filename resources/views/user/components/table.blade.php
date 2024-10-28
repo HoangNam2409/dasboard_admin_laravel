@@ -31,7 +31,7 @@
                     <td>
                         <div class="address-item name">{{ $user->address }}</div>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center js-switch-{{ $user->id }}">
                         <input type="checkbox" value="{{ $user->publish }}" class="js-switch status"
                             data-field="publish" data-model="User" data-modelId="{{ $user->id }}"
                             {{ $user->publish == 1 ? 'checked' : '' }} />

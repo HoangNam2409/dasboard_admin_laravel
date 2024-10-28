@@ -6,7 +6,9 @@
 
     HT.switchery = () => {
         $(".js-switch").each(function () {
-            var swichery = new Switchery(this, { color: "#1AB394" });
+            var swichery = new Switchery(this, {
+                color: "#1AB394",
+            });
         });
     };
 
@@ -108,7 +110,32 @@
                     data: option,
                     dataType: "json",
                     success: function (res) {
-                        console.log(res);
+                        if (res.flag == true) {
+                            let cssActive1 =
+                                "box-shadow: rgb(26, 179, 148) 0px 0px 0px 16px inset; border-color: rgb(26, 179, 148); transition: border 0.4s, box-shadow 0.4s, background-color 1.2s; background-color: rgb(26, 179, 148);";
+                            let cssActive2 =
+                                "left: 20px; transition: left 0.2s;";
+                            let cssUnActive1 =
+                                "box-shadow: rgb(223, 223, 223) 0px 0px 0px 0px inset; border-color: rgb(223, 223, 223); transition: border 0.4s, box-shadow 0.4s;";
+                            let cssUnActive2 =
+                                "left: 0px; transition: left 0.2s;";
+
+                            for (let i = 0; i < id.length; i++) {
+                                if (option.value == 1) {
+                                    $(".js-switch-" + id[i])
+                                        .find("span.switchery")
+                                        .attr("style", cssActive1)
+                                        .find("small")
+                                        .attr("style", cssActive2);
+                                } else {
+                                    $(".js-switch-" + id[i])
+                                        .find("span.switchery")
+                                        .attr("style", cssUnActive1)
+                                        .find("small")
+                                        .attr("style", cssUnActive2);
+                                }
+                            }
+                        }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log("Lỗi: " + textStatus + " " + errorThrown);

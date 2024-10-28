@@ -26,6 +26,7 @@ class UserService implements UserServiceInterface
     public function paginate($request)
     {
         $condition['keyword'] = addslashes($request->input('keyword'));
+        $condition['publish'] = $request->integer('publish');
         $perPage = $request->integer('perpage');
         $extend['path'] = 'user/index';
 
@@ -116,7 +117,19 @@ class UserService implements UserServiceInterface
     // Change Status All
     public function updateStatusAll(array $post = [])
     {
-        
+        DB::beginTransaction();
+
+        $payload[$post['field']] = $post['value'];
+        $this->userRepository->updateByWhereIn('id', $post['id'], $payload);
+
+        try {
+            DB::commit();
+            return true;
+        } catch(\Exception $e) {
+            DB::rollBack();
+            $e->getMessage();
+            return false;
+        }
     }
 
 
