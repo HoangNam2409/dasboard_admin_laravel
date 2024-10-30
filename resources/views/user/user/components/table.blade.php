@@ -8,6 +8,7 @@
             <th class="text-center">Email</th>
             <th class="text-center">Số điện thoại</th>
             <th class="text-center">Địa chỉ</th>
+            <th class="text-center">Nhóm thành viên</th>
             <th class="text-center">Tình trạng</th>
             <th class="text-center">Thao tác</th>
         </tr>
@@ -31,10 +32,13 @@
                     <td>
                         <div class="address-item name">{{ $user->address }}</div>
                     </td>
+                    <td>
+                        <div class="address-item name">{{ $user->user_catalogues->name }}</div>
+                    </td>
                     <td class="text-center js-switch-{{ $user->id }}">
                         <input type="checkbox" value="{{ $user->publish }}" class="js-switch status"
                             data-field="publish" data-model="User" data-modelId="{{ $user->id }}"
-                            {{ $user->publish == 1 ? 'checked' : '' }} />
+                            {{ $user->publish == 2 ? 'checked' : '' }} />
                     </td>
                     <td class="text-center">
                         <a href="{{ route('user.edit', $user->id) }}" class="btn btn-success"><i

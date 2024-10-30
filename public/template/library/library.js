@@ -18,34 +18,6 @@
         }
     };
 
-    HT.changeStatus = () => {
-        if ($(".status").length) {
-            $(document).on("change", ".status", function () {
-                let _this = $(this);
-                let option = {
-                    value: _this.val(),
-                    modelId: _this.attr("data-modelId"),
-                    model: _this.attr("data-model"),
-                    field: _this.attr("data-field"),
-                    _token,
-                };
-
-                $.ajax({
-                    url: "/ajax/dashboard/changeStatus", // URL của tệp xử lý dữ liệu trên máy chủ
-                    type: "POST",
-                    data: option,
-                    dataType: "json",
-                    success: function (res) {
-                        console.log(res);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("Lỗi: " + textStatus + " " + errorThrown);
-                    },
-                });
-            });
-        }
-    };
-
     HT.checkAll = () => {
         if ($("#checkAll").length) {
             $(document).on("click", "#checkAll", function () {
@@ -82,6 +54,39 @@
         let allChecked =
             $(".checkBoxItem:checked").length === $(".checkBoxItem").length;
         $("#checkAll").prop("checked", allChecked);
+    };
+
+    /* ============================================================================= */
+
+    HT.changeStatus = () => {
+        if ($(".status").length) {
+            $(document).on("change", ".status", function () {
+                let _this = $(this);
+                let option = {
+                    value: _this.val(),
+                    modelId: _this.attr("data-modelId"),
+                    model: _this.attr("data-model"),
+                    field: _this.attr("data-field"),
+                    _token,
+                };
+
+                $.ajax({
+                    url: "/ajax/dashboard/changeStatus", // URL của tệp xử lý dữ liệu trên máy chủ
+                    type: "POST",
+                    data: option,
+                    dataType: "json",
+                    success: function (res) {
+                        let inputCheckbox = option.value == 1 ? 2 : 1;
+                        if (res.flag) {
+                            _this.val(inputCheckbox);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("Lỗi: " + textStatus + " " + errorThrown);
+                    },
+                });
+            });
+        }
     };
 
     HT.changeStatusAll = () => {
@@ -121,7 +126,7 @@
                                 "left: 0px; transition: left 0.2s;";
 
                             for (let i = 0; i < id.length; i++) {
-                                if (option.value == 1) {
+                                if (option.value == 2) {
                                     $(".js-switch-" + id[i])
                                         .find("span.switchery")
                                         .attr("style", cssActive1)

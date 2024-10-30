@@ -1,4 +1,4 @@
-<form action="{{ route('user.index') }}" method="get">
+<form action="{{ route('user.catalogue.index') }}" method="get">
     <div class="filter-wrapper">
         <div class="uk-flex uk-flex-middle uk-flex-space-between">
             <div class="perpage">
@@ -14,22 +14,17 @@
                     </select>
                 </div>
             </div>
+
             @php
-                $publishArray = ['Unpublish', 'Publish'];
                 $publish = request('publish') ?: old('publish');
             @endphp
             <div class="action">
                 <div class="uk-flex">
                     <select name="publish" class="form-control mr10">
-                        <option value="-1" selected="selected">Chọn tình trạng</option>
-                        @foreach ($publishArray as $key => $val)
+                        @foreach (config('apps.general.publish') as $key => $val)
                             <option value="{{ $key }}" {{ $publish == $key ? 'selected' : '' }}>
                                 {{ $val }}</option>
                         @endforeach
-                    </select>
-                    <select name="user_catalogue_id" class="form-control mr10">
-                        <option value="0" selected="selected">Chọn nhóm thành viên</option>
-                        <option value="1">Quản trị viên</option>
                     </select>
                     <div class="uk-search uk-flex uk-flex-middle mr10">
                         <div class="input-group">
@@ -42,9 +37,9 @@
                             </span>
                         </div>
                     </div>
-                    <a href="{{ route('user.create') }}" class="btn btn-danger"><i class="fa fa-plus mr10"></i>Thêm mới
-                        thành
-                        viên</a>
+                    <a href="{{ route('user.catalogue.create') }}" class="btn btn-danger"><i
+                            class="fa fa-plus mr10"></i>Thêm mới
+                        nhóm thành viên</a>
                 </div>
             </div>
         </div>

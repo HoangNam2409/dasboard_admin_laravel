@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Services\Interfaces\UserServiceInterface;
+use App\Services\Interfaces\UserCatalogueServiceInterface;
+use App\Repositories\Interfaces\UserCatalogueRepositoryInterface as UserCatalogueRepository;
 use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -13,12 +14,16 @@ use Illuminate\Support\Facades\Hash;
  * Class UserService
  * @package App\Services
  */
-class UserService implements UserServiceInterface
+class UserCatalogueService implements UserCatalogueServiceInterface
 {
+    protected $userCatalogueRepository;
     protected $userRepository;
 
-    public function __construct(UserRepository $userRepository)
-    {
+    public function __construct(
+        UserCatalogueRepository $userCatalogueRepository,
+        UserRepository $userRepository
+    ){
+        $this->userCatalogueRepository = $userCatalogueRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -26,12 +31,12 @@ class UserService implements UserServiceInterface
     public function paginate($request)
     {
         $condition['keyword'] = addslashes($request->input('keyword'));
-        $condition['publish'] = $request->input('publish');
+        $condition['publish'] = $request->integer('publish');
         $perPage = $request->integer('perpage');
-        $extend['path'] = 'user/index';
+        $extend['path'] = 'user/catalogue/index';
 
-        $users = $this->userRepository->pagination(['id', 'email', 'name', 'phone', 'address', 'publish','user_catalogue_id'], $condition, [], $perPage, $extend, []);
-        return $users;
+        $userCatalogues = $this->userCatalogueRepository->pagination(['id', 'name', 'description', 'publish'], $condition, [], $perPage, $extend, ['users']);
+        return $userCatalogues;
     }
 
     // Create
@@ -40,11 +45,9 @@ class UserService implements UserServiceInterface
         DB::beginTransaction();
         try {
 
-            $payload = $request->except('_token', 'send', 're_password');
-            $payload['birthday'] = $this->convertBirthdayDate($payload['birthday']);
-            $payload['password'] = Hash::make($payload['password']);
+            $payload = $request->except('_token', 'send');
             
-            $this->userRepository->create($payload);
+            $this->userCatalogueRepository->create($payload);
             
             DB::commit();
             return true;
@@ -65,9 +68,8 @@ class UserService implements UserServiceInterface
 
         try {
             $payload = $request->except('_token', 'send');
-            $payload['birthday'] = $this->convertBirthdayDate($payload['birthday']);
 
-            $this->userRepository->update($id, $payload);
+            $this->userCatalogueRepository->update($id, $payload);
 
             DB::commit();
             return true;
@@ -84,7 +86,7 @@ class UserService implements UserServiceInterface
         DB::beginTransaction();
 
         try {
-            $this->userRepository->destroy($id);
+            $this->userCatalogueRepository->destroy($id);
 
             DB::commit();
             return true;
@@ -103,7 +105,8 @@ class UserService implements UserServiceInterface
         try {
             $payload[$post['field']] = ($post['value'] == 1 ? 2 : 1);
 
-            $this->userRepository->update($post['modelId'], $payload);
+            $this->userCatalogueRepository->update($post['modelId'], $payload);
+            $this->changeUserStatus($post, $payload[$post['field']]);
 
             DB::commit();
             return true;
@@ -120,7 +123,9 @@ class UserService implements UserServiceInterface
         DB::beginTransaction();
 
         $payload[$post['field']] = $post['value'];
-        $this->userRepository->updateByWhereIn('id', $post['id'], $payload);
+        
+        $this->userCatalogueRepository->updateByWhereIn('id', $post['id'], $payload);
+        $this->changeUserStatus($post, $post['value']);
 
         try {
             DB::commit();
@@ -131,6 +136,35 @@ class UserService implements UserServiceInterface
             return false;
         }
     }
+
+    // Change User Status
+    private function changeUserStatus($post, $value) 
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $array = [];
+            if(isset($post['modelId'])) {
+                $array[] = $post['modelId'];
+            } else {
+                $array = $post['id'];
+            }
+
+            $payload[$post['field']] = $value;
+
+            $this->userRepository->updateByWhereIn('user_catalogue_id', $array, $payload);
+
+            DB::commit();
+            return true;
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $e->getMessage();
+            return false;
+        }
+    }
+
 
     // convertBirthdayDate
     private function convertBirthdayDate($birthday)

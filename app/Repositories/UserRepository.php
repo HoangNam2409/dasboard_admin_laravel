@@ -20,7 +20,7 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
         $this->model = $model;
     }
 
-    public function pagination(array $columns = ['*'], array $condition = [], array $join = [], int $perPage = 20, array $extend = [])
+    public function pagination(array $columns = ['*'], array $condition = [], array $join = [], int $perPage = 20, array $extend = [], array $relations = [])
     {
         $query = $this->model->select($columns)->where(function($query) use ($condition) {
             if(isset($condition['keyword']) && !empty($condition['keyword'])) {
@@ -30,12 +30,12 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
                         ->orWhere('address', 'LIKE', '%'.$condition['keyword'].'%'); 
             }
 
-            if(isset($condition['publish']) && $condition['publish'] != -1) {
+            if(isset($condition['publish']) && $condition['publish'] != 0) {
                 $query->where('publish', '=', $condition['publish']);
             }
 
             return $query;
-        });
+        })->with('user_catalogues');
 
         if(!empty($join)) {
             $query->join(...$join);

@@ -6,6 +6,8 @@
 
 <!-- jQuery UI -->
 <script src="/template/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script src="/template/js/inspinia.js"></script>
+<script src="/template/js/plugins/pace/pace.min.js"></script>
 
 @if (isset($config['js']) && is_array($config['js']))
     @foreach ($config['js'] as $key => $val)

@@ -21,11 +21,13 @@ class DashboardController extends Controller
         if(class_exists($serviceInterfaceNamespace)) {
             $serviceInstance = app($serviceInterfaceNamespace);
         }
-        $serviceInstance->updateStatus($post);
+
+        $flag = $serviceInstance->updateStatus($post);
 
         return response()->json([
             'message' => 'success',
-            'code' => 200
+            'code' => 200,
+            'flag' => $flag,
         ]);
     }
 

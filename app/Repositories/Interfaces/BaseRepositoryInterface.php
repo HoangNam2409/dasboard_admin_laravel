@@ -14,6 +14,7 @@ interface BaseRepositoryInterface
         array $join = [],
         int $perPage = 20,
         array $extend = [],
+        array $relations = [],
     );
     public function destroy(string $id);
     public function update(string $id, array $payload = []);

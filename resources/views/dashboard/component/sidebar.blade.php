@@ -22,15 +22,21 @@
                     IN+
                 </div>
             </li>
-            <li class="active">
-                <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">QL Thành Viên</span>
-                    <span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level">
-                    <li><a href="dashboard_2.html">QL Nhóm Thành Viên</a></li>
-                    <li><a href="{{ route('user.index') }}">QL Thành Viên</a></li>
-                </ul>
-            </li>
 
+            @foreach (config('apps.module.module') as $key => $val)
+                <li>
+                    <a href=""> <i class="{{ $val['icon'] }}"></i> <span
+                            class="nav-label">{{ $val['title'] }}</span>
+                        <span class="fa arrow"></span></a>
+                    @if (isset($val['subModule']))
+                        <ul class="nav nav-second-level">
+                            @foreach ($val['subModule'] as $module)
+                                <li><a href="{{ route($module['route']) }}">{{ $module['title'] }}</a></li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </li>
+            @endforeach
         </ul>
 
     </div>

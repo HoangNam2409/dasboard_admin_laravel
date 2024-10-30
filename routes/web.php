@@ -4,6 +4,7 @@ use App\Http\Controllers\Ajax\DashboardController as AjaxDashboardController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\DashboardController;
 use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserCatalogueController;
 use App\Http\Controllers\Ajax\LocationController;
 use App\Http\Middleware\AuthenticateMiddleware;
 use App\Http\Middleware\LoginMiddleware;
@@ -26,6 +27,15 @@ Route::get('/user/index', [UserController::class, 'index'])->name('user.index')-
 Route::post('/user/update/{id}', [UserController::class, 'update'])->name('user.update')->middleware(AuthenticateMiddleware::class);
 Route::post('/user/store', [UserController::class, 'store'])->name('user.store')->middleware(AuthenticateMiddleware::class);
 Route::delete('/user/destroy/{id}', [UserController::class, 'destroy'])->name('user.destroy')->middleware(AuthenticateMiddleware::class);
+
+// USERS CATALOGUE
+Route::get('/user/catalogue/delete/{id}', [UserCatalogueController::class, 'delete'])->name('user.catalogue.delete')->middleware(AuthenticateMiddleware::class);
+Route::get('/user/catalogue/edit/{id}', [UserCatalogueController::class, 'edit'])->name('user.catalogue.edit')->where('id', '[0-9]+')->middleware(AuthenticateMiddleware::class);
+Route::get('/user/catalogue/create', [UserCatalogueController::class, 'create'])->name('user.catalogue.create')->middleware(AuthenticateMiddleware::class);
+Route::get('/user/catalogue/index', [UserCatalogueController::class, 'index'])->name('user.catalogue.index')->middleware(AuthenticateMiddleware::class);
+Route::post('/user/catalogue/update/{id}', [UserCatalogueController::class, 'update'])->name('user.catalogue.update')->middleware(AuthenticateMiddleware::class);
+Route::post('/user/catalogue/store', [UserCatalogueController::class, 'store'])->name('user.catalogue.store')->middleware(AuthenticateMiddleware::class);
+Route::delete('/user/catalogue/destroy/{id}', [UserCatalogueController::class, 'destroy'])->name('user.catalogue.destroy')->middleware(AuthenticateMiddleware::class);
 
 // Dashboard
 Route::get('/dashboard/index', [DashboardController::class, 'index'])->name('dashboard.index')->middleware(AuthenticateMiddleware::class);

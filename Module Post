@@ -1,0 +1,68 @@
+Module Post:
+-post_catalogues: Lưu các nhóm bài viết: tin tức, thời sự, ...
+-posts: Lưu chi tiết bài viết
+-post_catalogue_post: pivot quan hệ giữa 2 bảng post_catalogues và posts
+-languages: Lưu ngôn ngữ
+-post_catalogue_language: Lưu quan hệ giữa post_catalogues và languages
+-post_language
+
+n - n
+đa ngôn ngữ
+
+-languages: 
+  + id
+  + name (Tiengviet)
+  + image
+  + canonical (vn)
+  + user_id
+  + deleted_at
+
+
+- post_catalogues:
+  + id
+  + parent_id (Lưu mã của danh mục cha)
+  + left (Giá trị bên trái của node)
+  + right (Giá trị bên phải của node)
+  + level (cấp của cái node đó)
+  + canonical (đường dẫn truy cập vào danh mục)
+  + image
+  + icon
+  + album (danh sách ảnh)
+  + deleted_at (xóa mềm)
+  + publish (trạng thái)
+  + order (sắp xếp các danh mục)
+  + user_id (người tạo ra danh mục)
+
+nested_set
+
+-post_catalogue_language:
+  + post_catalogue_id (Foreign Key)
+  + language_id (Foreign Key)
+  + name (Tên bài viết)
+  + description (mô tả ngắn)
+  + content (nội dung của danh mục)
+  + meta_title (tiêu đề SEO)
+  + meta_description (mô tả SEO)
+  + meta_keyword (từ khóa SEO)
+
+-posts: 
+  + id
+  + post_catalogue_id
+  + image
+  + icon
+  + album
+  + order
+  + deleted_at
+  + publish
+  + user_id
+
+-post_language:
+  + post_id (Foreign Key)
+  + language_id (Foreign Key)
+  + name (Tên bài viết)
+  + description (mô tả ngắn)
+  + content (nội dung của danh mục)
+  + meta_title (tiêu đề SEO)
+  + meta_description (mô tả SEO)
+  + meta_keyword (từ khóa SEO)
+  + viewed
