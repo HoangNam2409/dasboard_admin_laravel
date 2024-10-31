@@ -4,6 +4,7 @@
             <th class="text-center">
                 <input type="checkbox" value="" id="checkAll" class="input-checkbox">
             </th>
+            <th class="text-center table-header-image">Ảnh</th>
             <th class="text-center">Tên ngôn ngữ</th>
             <th class="text-center">Canonical</th>
             <th class="text-center">Mô tả</th>
@@ -17,6 +18,9 @@
                 <tr>
                     <td class="text-center">
                         <input type="checkbox" value="{{ $language->id }}" class="input-checkbox checkBoxItem">
+                    </td>
+                    <td>
+                        <span class="image img-cover"><img src="{{ $language->image }}" alt=""></span>
                     </td>
                     <td>
                         <div class="user-item name">{{ $language->name }}</div>

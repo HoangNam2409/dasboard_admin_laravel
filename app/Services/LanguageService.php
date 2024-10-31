@@ -32,7 +32,7 @@ class LanguageService implements LanguageServiceInterface
         $perPage = $request->integer('perpage');
         $extend['path'] = 'language/index';
 
-        $languages = $this->languageRepository->pagination(['id', 'name', 'canonical', 'publish'], $condition, [], $perPage, $extend, []);
+        $languages = $this->languageRepository->pagination(['id', 'name','image', 'canonical', 'publish'], $condition, [], $perPage, $extend, []);
         return $languages;
     }
 

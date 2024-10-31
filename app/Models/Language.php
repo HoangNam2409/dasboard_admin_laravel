@@ -19,6 +19,7 @@ class Language extends Model
      */
     protected $fillable = [
         'name',
+        'image',
         'canonical',
         'publish',
         'user_id',

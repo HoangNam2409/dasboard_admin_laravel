@@ -60,15 +60,7 @@ class UserController extends Controller
         $provinces = $this->provinceRepository->all();
 
         // Config
-        $config = [
-            'css' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css'
-            ],
-            'js' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
-                '/template/library/location.js'
-            ]
-        ];
+        $config = $this->configData();
         $config['seo'] = config('apps.user');
         $config['method'] = 'create';
 
@@ -98,15 +90,7 @@ class UserController extends Controller
         $user = $this->userRepository->findById($id);
 
         // Config
-        $config = [
-            'css' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css'
-            ],
-            'js' => [
-                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
-                '/template/library/location.js'
-            ]
-        ];
+        $config = $this->configData();
         $config['seo'] = config('apps.user');
         $config['method'] = 'edit';
 
@@ -151,5 +135,20 @@ class UserController extends Controller
         }
 
         return redirect()->route('user.index')->with('error', 'Bạn đã xóa thành viên thất bại.');
+    }
+
+    private function configData()
+    {
+        return [
+            'css' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css'
+            ],
+            'js' => [
+                'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js',
+                '/template/library/location.js',
+                '/template/plugins/ckfinder_2/ckfinder.js',
+                '/template/library/finder.js',
+            ]
+        ];
     }
 }

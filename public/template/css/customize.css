@@ -133,3 +133,19 @@ table > tfoot > tr > td {
 .active-bg {
     background: #ffc !important;
 }
+
+.table-header-image {
+    width: 100px;
+}
+
+.img-cover {
+    display: inline-block;
+    width: 100px;
+    height: 50px;
+}
+
+.img-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

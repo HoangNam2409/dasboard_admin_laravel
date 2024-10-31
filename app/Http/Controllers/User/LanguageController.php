@@ -53,6 +53,7 @@ class LanguageController extends Controller
     // action create
     public function create()
     {
+        $config = $this->configData();
         $config['seo'] = config('apps.language');
         $config['method'] = 'create';
 
@@ -80,6 +81,7 @@ class LanguageController extends Controller
         
         $language = $this->languageRepository->findById($id);
 
+        $config = $this->configData();
         $config['seo'] = config('apps.language');
         $config['method'] = 'edit';
 
@@ -123,5 +125,15 @@ class LanguageController extends Controller
         }
 
         return redirect()->route('language.index')->with('error', 'Bạn đã xóa thành viên thất bại.');
+    }
+
+    private function configData() 
+    {
+        return [
+            'js' => [
+                '/template/plugins/ckfinder_2/ckfinder.js',
+                '/template/library/finder.js',
+            ]
+        ];
     }
 }

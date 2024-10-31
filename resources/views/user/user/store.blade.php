@@ -108,7 +108,7 @@
                                     <label for="" class="control-label text-left">Ảnh đại diện</label>
                                     {{-- <input type="file" name="image" value="" class="form-control"
                                         placeholder="" autocomplete="off"> --}}
-                                    <input type="text" class="form-control" name="image"
+                                    <input type="text" class="form-control upload-image" name="image"
                                         value="{{ old('image', $user->image ?? '') }}">
                                 </div>
                             </div>
