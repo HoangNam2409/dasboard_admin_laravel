@@ -2,29 +2,26 @@
 
 namespace App\Services;
 
-use App\Services\Interfaces\UserCatalogueServiceInterface;
-use App\Repositories\Interfaces\UserCatalogueRepositoryInterface as UserCatalogueRepository;
-use App\Repositories\Interfaces\UserRepositoryInterface as UserRepository;
+use App\Services\Interfaces\LanguageServiceInterface;
+use App\Repositories\Interfaces\LanguageRepositoryInterface as LanguageRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * Class UserService
+ * Class LanguageService
  * @package App\Services
  */
-class UserCatalogueService implements UserCatalogueServiceInterface
+class LanguageService implements LanguageServiceInterface
 {
-    protected $userCatalogueRepository;
-    protected $userRepository;
+    protected $languageRepository;
 
     public function __construct(
-        UserCatalogueRepository $userCatalogueRepository,
-        UserRepository $userRepository
+        LanguageRepository $languageRepository,
     ){
-        $this->userCatalogueRepository = $userCatalogueRepository;
-        $this->userRepository = $userRepository;
+        $this->languageRepository = $languageRepository;
     }
 
     // paginate
@@ -33,10 +30,10 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         $condition['keyword'] = addslashes($request->input('keyword'));
         $condition['publish'] = $request->integer('publish');
         $perPage = $request->integer('perpage');
-        $extend['path'] = 'user/catalogue/index';
+        $extend['path'] = 'language/index';
 
-        $userCatalogues = $this->userCatalogueRepository->pagination(['id', 'name', 'description', 'publish'], $condition, [], $perPage, $extend, ['users']);
-        return $userCatalogues;
+        $languages = $this->languageRepository->pagination(['id', 'name', 'canonical', 'publish'], $condition, [], $perPage, $extend, []);
+        return $languages;
     }
 
     // Create
@@ -46,8 +43,9 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         try {
 
             $payload = $request->except('_token', 'send');
+            $payload['user_id'] = Auth::id();
             
-            $this->userCatalogueRepository->create($payload);
+            $this->languageRepository->create($payload);
             
             DB::commit();
             return true;
@@ -69,7 +67,7 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         try {
             $payload = $request->except('_token', 'send');
 
-            $this->userCatalogueRepository->update($id, $payload);
+            $this->languageRepository->update($id, $payload);
 
             DB::commit();
             return true;
@@ -86,7 +84,7 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         DB::beginTransaction();
 
         try {
-            $this->userCatalogueRepository->destroy($id);
+            $this->languageRepository->destroy($id);
 
             DB::commit();
             return true;
@@ -105,8 +103,7 @@ class UserCatalogueService implements UserCatalogueServiceInterface
         try {
             $payload[$post['field']] = ($post['value'] == 1 ? 2 : 1);
 
-            $this->userCatalogueRepository->update($post['modelId'], $payload);
-            $this->changeUserStatus($post, $payload[$post['field']]);
+            $this->languageRepository->update($post['modelId'], $payload);
 
             DB::commit();
             return true;
@@ -124,41 +121,12 @@ class UserCatalogueService implements UserCatalogueServiceInterface
 
         $payload[$post['field']] = $post['value'];
         
-        $this->userCatalogueRepository->updateByWhereIn('id', $post['id'], $payload);
-        $this->changeUserStatus($post, $post['value']);
+        $this->languageRepository->updateByWhereIn('id', $post['id'], $payload);
 
         try {
             DB::commit();
             return true;
         } catch(\Exception $e) {
-            DB::rollBack();
-            $e->getMessage();
-            return false;
-        }
-    }
-
-    // Change User Status
-    private function changeUserStatus($post, $value) 
-    {
-        DB::beginTransaction();
-
-        try {
-
-            $array = [];
-            if(isset($post['modelId'])) {
-                $array[] = $post['modelId'];
-            } else {
-                $array = $post['id'];
-            }
-
-            $payload[$post['field']] = $value;
-
-            $this->userRepository->updateByWhereIn('user_catalogue_id', $array, $payload);
-
-            DB::commit();
-            return true;
-
-        } catch (\Exception $e) {
             DB::rollBack();
             $e->getMessage();
             return false;

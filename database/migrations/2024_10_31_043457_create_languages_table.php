@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->string('canonical', 10)->unique();
-            $table->string('image', 255);
+            $table->string('image', 255)->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->tinyInteger('publish')->default(1);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

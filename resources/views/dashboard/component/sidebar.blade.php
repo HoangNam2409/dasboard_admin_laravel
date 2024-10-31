@@ -1,3 +1,7 @@
+@php
+    $segment = request()->segments(1);
+@endphp
+
 <nav class="navbar-default navbar-static-side" role="navigation">
     <div class="sidebar-collapse">
         <ul class="nav metismenu" id="side-menu">
@@ -24,7 +28,7 @@
             </li>
 
             @foreach (config('apps.module.module') as $key => $val)
-                <li>
+                <li class="{{ in_array($segment, $val['name']) ? 'active' : '' }}">
                     <a href=""> <i class="{{ $val['icon'] }}"></i> <span
                             class="nav-label">{{ $val['title'] }}</span>
                         <span class="fa arrow"></span></a>
