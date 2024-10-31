@@ -1,6 +1,6 @@
 @include('dashboard.component.breadcrumb', ['title' => $config['seo']['create']['title']])
 
-<form action="{{ route('language.destroy', $language->id) }}" method="post" class="box">
+<form action="{{ route('post.catalogue.destroy', $cataloguage->id) }}" method="post" class="box">
     @csrf
     @method('DELETE')
     <div class="wrapper wrapper-content animated fadeInRight">
@@ -9,7 +9,7 @@
                 <div class="panel-head">
                     <div class="panel-title">Thông tin chung</div>
                     <div class="panel-description">
-                        <p>- Bạn muốn xóa ngôn ngữ: {{ $language->name }}</p>
+                        <p>- Bạn muốn xóa ngôn ngữ: {{ $cataloguage->name }}</p>
                         <p>- Lưu ý: Không thể hồi phục thành viên sau khi xóa. Bạn chắc chắn muốn thực hiện chức năng
                             này.
                     </div>
@@ -22,7 +22,7 @@
                             <div class="col-lg-12">
                                 <div class="form-row">
                                     <label for="" class="control-label text-left">Tên ngôn ngữ</label>
-                                    <input type="text" name="name" value="{{ $language->name ?? '' }}"
+                                    <input type="text" name="name" value="{{ $cataloguage->name ?? '' }}"
                                         class="form-control" readonly>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
     </div>
 
     <div class="text-right mb15">
-        <a href="{{ route('language.index') }}" type="submit" class="btn btn-warning" name="send"
+        <a href="{{ route('post.catalogue.index') }}" type="submit" class="btn btn-warning" name="send"
             value="send">Hủy</a>
         <button type="submit" class="btn btn-danger" name="send" value="send">Xóa dữ liệu</button>
     </div>

@@ -1,4 +1,4 @@
-<form action="{{ route('language.index') }}" method="get">
+<form action="{{ route('post.catalogue.index') }}" method="get">
     <div class="filter-wrapper">
         <div class="uk-flex uk-flex-middle uk-flex-space-between">
             <div class="perpage">
@@ -37,9 +37,9 @@
                             </span>
                         </div>
                     </div>
-                    <a href="{{ route('language.create') }}" class="btn btn-danger">
+                    <a href="{{ route('post.catalogue.create') }}" class="btn btn-danger">
                         <i class="fa fa-plus mr10"></i>
-                        Thêm mới ngôn ngữ
+                        Thêm mới nhóm bài viết
                     </a>
                 </div>
             </div>
